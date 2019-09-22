@@ -1,5 +1,7 @@
 <?php namespace BookStack\Entities;
 
+use Illuminate\Support\Str;
+
 class SlugGenerator
 {
 
@@ -20,7 +22,13 @@ class SlugGenerator
      */
     public function generate(): string
     {
-        $slug = $this->formatNameAsSlug($this->entity->name);
+        /*$slug = $this->formatNameAsSlug($this->entity->name);
+        while ($this->slugInUse($slug)) {
+            $slug .= '-' . substr(md5(rand(1, 500)), 0, 3);
+        }
+        return $slug;*/
+        
+        $slug = Str::slug($this->entity->name, '-');
         while ($this->slugInUse($slug)) {
             $slug .= '-' . substr(md5(rand(1, 500)), 0, 3);
         }

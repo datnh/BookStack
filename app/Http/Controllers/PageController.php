@@ -188,7 +188,9 @@ class PageController extends Controller
         }
 
         Views::add($page);
-        $this->setPageTitle($page->getShortName());
+        //$this->setPageTitle($page->getShortName());
+        $this->setPageTitle($page->name . ' - ' . $page->book->name);
+        
         return view('pages.show', [
             'page' => $page,'book' => $page->book,
             'current' => $page,

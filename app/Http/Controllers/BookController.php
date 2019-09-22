@@ -113,7 +113,7 @@ class BookController extends Controller
         $this->checkPermission('book-create-all');
         $this->validate($request, [
             'name' => 'required|string|max:255',
-            'description' => 'string|max:1000',
+            //'description' => 'string|max:1000',
             'image' => $this->imageRepo->getImageValidationRules(),
         ]);
 
@@ -195,7 +195,7 @@ class BookController extends Controller
         $this->checkOwnablePermission('book-update', $book);
         $this->validate($request, [
             'name' => 'required|string|max:255',
-            'description' => 'string|max:1000',
+            //'description' => 'string|max:1000',
             'image' => $this->imageRepo->getImageValidationRules(),
         ]);
 
