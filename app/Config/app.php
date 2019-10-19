@@ -52,7 +52,7 @@ return [
     'locale' => env('APP_LANG', 'en'),
 
     // Locales available
-    'locales' => ['en', 'ar', 'de', 'de_informal', 'es', 'es_AR', 'fr', 'hu', 'nl', 'pt_BR', 'sk', 'cs', 'sv', 'kr', 'ja', 'pl', 'it', 'ru', 'uk', 'zh_CN', 'zh_TW'],
+    'locales' => ['en', 'ar', 'de', 'de_informal', 'es', 'es_AR', 'fr', 'hu', 'nl', 'pt_BR', 'sk', 'cs', 'sv', 'ko', 'ja', 'pl', 'it', 'ru', 'uk', 'zh_CN', 'zh_TW', 'tr'],
 
     //  Application Fallback Locale
     'fallback_locale' => 'en',
@@ -96,6 +96,7 @@ return [
         Illuminate\Redis\RedisServiceProvider::class,
         Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
@@ -109,7 +110,6 @@ return [
 
         // BookStack replacement service providers (Extends Laravel)
         BookStack\Providers\PaginationServiceProvider::class,
-        BookStack\Providers\TranslationServiceProvider::class,
 
         // BookStack custom service providers
         BookStack\Providers\AuthServiceProvider::class,

@@ -16,6 +16,7 @@ import 'codemirror/mode/mllike/mllike';
 import 'codemirror/mode/nginx/nginx';
 import 'codemirror/mode/php/php';
 import 'codemirror/mode/powershell/powershell';
+import 'codemirror/mode/properties/properties';
 import 'codemirror/mode/python/python';
 import 'codemirror/mode/ruby/ruby';
 import 'codemirror/mode/rust/rust';
@@ -28,6 +29,8 @@ import 'codemirror/mode/yaml/yaml';
 // Addons
 import 'codemirror/addon/scroll/scrollpastend';
 
+// Mapping of potential languages or formats from user input
+// to their proper codemirror modes.
 const modeMap = {
     css: 'css',
     c: 'text/x-csrc',
@@ -42,6 +45,7 @@ const modeMap = {
     haskell: 'haskell',
     hs: 'haskell',
     html: 'htmlmixed',
+    ini: 'properties',
     javascript: 'javascript',
     json: {name: 'javascript', json: true},
     js: 'javascript',
@@ -54,6 +58,7 @@ const modeMap = {
     ml: 'mllike',
     nginx: 'nginx',
     powershell: 'powershell',
+    properties: 'properties',
     ocaml: 'mllike',
     php: 'php',
     py: 'python',
@@ -102,6 +107,7 @@ function highlightElem(elem) {
         value: content,
         mode:  mode,
         lineNumbers: true,
+        lineWrapping: false,
         theme: getTheme(),
         readOnly: true
     });
@@ -188,6 +194,7 @@ function wysiwygView(elem) {
         value: content,
         mode:  getMode(lang),
         lineNumbers: true,
+        lineWrapping: false,
         theme: getTheme(),
         readOnly: true
     });
@@ -213,8 +220,8 @@ function popupEditor(elem, modeSuggestion) {
         value: content,
         mode:  getMode(modeSuggestion),
         lineNumbers: true,
-        theme: getTheme(),
-        lineWrapping: true
+        lineWrapping: false,
+        theme: getTheme()
     });
 }
 
@@ -240,24 +247,27 @@ function setContent(cmInstance, codeContent) {
 }
 
 /**
- * Get a CodeMirror instace to use for the markdown editor.
+ * Get a CodeMirror instance to use for the markdown editor.
  * @param {HTMLElement} elem
  * @returns {*}
  */
 function markdownEditor(elem) {
-    let content = elem.textContent;
+    const content = elem.textContent;
+    const config = {
+        value: content,
+        mode: "markdown",
+        lineNumbers: true,
+        lineWrapping: true,
+        theme: getTheme(),
+        scrollPastEnd: true,
+    };
+
+    window.$events.emitPublic(elem, 'editor-markdown-cm::pre-init', {config});
 
     return CodeMirror(function (elt) {
         elem.parentNode.insertBefore(elt, elem);
         elem.style.display = 'none';
-    }, {
-        value: content,
-        mode: "markdown",
-        lineNumbers: true,
-        theme: getTheme(),
-        lineWrapping: true,
-        scrollPastEnd: true,
-    });
+    }, config);
 }
 
 /**
