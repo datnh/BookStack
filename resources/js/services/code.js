@@ -25,6 +25,7 @@ import 'codemirror/mode/sql/sql';
 import 'codemirror/mode/toml/toml';
 import 'codemirror/mode/xml/xml';
 import 'codemirror/mode/yaml/yaml';
+import 'codemirror/mode/pascal/pascal';
 
 // Addons
 import 'codemirror/addon/scroll/scrollpastend';
@@ -61,6 +62,8 @@ const modeMap = {
     powershell: 'powershell',
     properties: 'properties',
     ocaml: 'mllike',
+    pascal: 'text/x-pascal',
+    pas: 'text/x-pascal',
     php: (content) => {
         return content.includes('<?php') ? 'php' : 'text/x-php';
     },
@@ -84,9 +87,20 @@ const modeMap = {
  * Highlight pre elements on a page
  */
 function highlight() {
-    let codeBlocks = document.querySelectorAll('.page-content pre, .comment-box .content pre');
-    for (let i = 0; i < codeBlocks.length; i++) {
-        highlightElem(codeBlocks[i]);
+    const codeBlocks = document.querySelectorAll('.page-content pre, .comment-box .content pre');
+    for (const codeBlock of codeBlocks) {
+        highlightElem(codeBlock);
+    }
+}
+
+/**
+ * Highlight all code blocks within the given parent element
+ * @param {HTMLElement} parent
+ */
+function highlightWithin(parent) {
+    const codeBlocks = parent.querySelectorAll('pre');
+    for (const codeBlock of codeBlocks) {
+        highlightElem(codeBlock);
     }
 }
 
@@ -97,7 +111,7 @@ function highlight() {
 function highlightElem(elem) {
     const innerCodeElem = elem.querySelector('code[class^=language-]');
     elem.innerHTML = elem.innerHTML.replace(/<br\s*[\/]?>/gi ,'\n');
-    const content = elem.textContent;
+    const content = elem.textContent.trimEnd();
 
     let mode = '';
     if (innerCodeElem !== null) {
@@ -171,7 +185,7 @@ function getMode(suggestion, content) {
  * @returns {*|string}
  */
 function getTheme() {
-    return window.codeTheme || 'base16-light';
+    return window.codeTheme || 'default';
 }
 
 /**
@@ -305,6 +319,7 @@ function getMetaKey() {
 
 export default {
     highlight: highlight,
+    highlightWithin: highlightWithin,
     wysiwygView: wysiwygView,
     popupEditor: popupEditor,
     setMode: setMode,
